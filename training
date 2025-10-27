@@ -1,0 +1,423 @@
+# %%
+#tohle je jupyter notebook, zde se příkazy spouští postupně, oproti .py . 
+hrs = float(input("Enter Hours: "))
+rate = float(input("Enter Hourly Rate: "))
+
+if hrs > 40:
+    pay = 40 * rate + (hrs - 40) * rate * 1.5
+else:
+    pay = hrs * rate
+
+print("Pay:", pay)
+
+
+# %%
+#zde budu zkoušet různé string library
+fruit = "BANana"
+str.capitalize(fruit)
+
+
+# %%
+#hodí se na vyhledávání dokumentů poodle koncovky
+#máme i .startswith
+text = "dokument.txt"
+print (text.endswith(".pdf"))
+
+# %%
+#hodí se na vycentrování nadpisu
+text = "python"
+print(text.center(10,"-"))
+
+# %%
+#str.find(sub[, start[, end]])
+#důležité pro vyhledávání textu v datech. Najde mi v podstatě index
+text = "programovani"
+print(text.find("gram"))
+
+# %%
+#str.lstrip([chars])
+#odstraní cokolovi zleva textu
+#str.strip([chars]) a pak je ještě rstrip
+text = "---programování"
+print(text.lstrip("-"))
+
+# %%
+#str.replace(old, new[, count])
+text = "banana"
+print(text.replace("a","o"))
+text1 = "banana"
+print(text1.replace("a","o",2))
+
+# %%
+#str.lower()
+#samozřejmě je i upper
+text = "BANANA"
+print(text.lower())
+
+# %%
+data = "From stephen.marquard@uct.ac.za Sat Jan 5 09:02:12"
+atpos = data.find("@")
+print(atpos)
+
+# %%
+sppos = data.find(" ", atpos)
+print(sppos)
+
+# %%
+#atpos+1 tam je kvuli tomu, abychom nedostali @uct.ac.za, abychom začali jakoby na 1 indexu
+host = data [atpos+1 : sppos]
+print(host)
+
+# %%
+data = "From david.pohoralek@email.cz Jan 5 09:02:12"
+atpos = data.find("@")
+sppos = data.find(" ", atpos)
+host3 = data [atpos+1 : sppos]
+print(host3)
+
+# %%
+email = "david.pohoralek@email.cz"
+pozice = email.find("@")
+
+
+# %%
+
+text = "X-DSPAM-Confidence:    0.8475"
+pozice = text.find(":")
+print(pozice)
+
+# %%
+pozice2 = text [19 : 50]
+print(pozice2.rstrip(" "))
+
+
+# %%
+fname = input("Enter file name: ")
+fh = open(fname)
+for lx in fh:
+    print(lx.upper().strip()) # upper zvětší text, strip rozdělí text do odstavců a nebude se psát \n
+
+# %%
+#lists, building from scratch
+friends1 = list()
+friends1.append ("Michal")
+friends1.append ("Franta")
+print(friends1)
+
+# %%
+total1 = 0
+count1 = 0
+while True :
+  inp = input("Enter a number: ")
+  if inp == "done": break
+  value = float(inp)
+  total1 = total1 + value
+  count1 = count1 + 1
+  
+average = total1 / count1
+print("Average: ", average)
+
+# %%
+#split funkce v listech
+abc = "With three words"
+stuff = abc.split()
+#print (len(stuff))
+#print(stuff[0])
+for lf in stuff:
+  print(lf)
+
+# %%
+#counting in dic with get
+counts = dict()
+names = ["David","Marek", "David", "Lukáš", "Pavel", "David"]
+for name in names:
+	counts[name] = counts.get(name, 0) + 1
+print (counts)
+
+# %%
+#tuples- sort by values insted of key
+c = {"a":10, "b":1, "c":22}
+tmp = list()
+for k, v in c.items():
+    tmp.append( (v, k))
+print (tmp) 
+
+# %%
+tmp = sorted(tmp. reverse=True)
+print (tmp)
+
+# %%
+fhand = open("romeo.txt")
+counts = dict()
+for line in fhand:
+    words = line.split()
+    for word in words:
+        counts[word] = counts.get(word,0) + 1
+lst = list() 
+
+# %%
+c = {'a':10, 'b':1, 'c':22}
+print(sorted ([(v,k) for k,v in c.items()]))
+#creates a dynamic list. In this case, we make a list of reverser tuples and then sort it by values
+
+
+# %%
+#příklad na obrácení pořadí v listech
+data = [5,2,9,1,7]
+print("Původní seznam:", data)
+data.sort(reverse=True)
+print("Seřazeno v opačném pořadí:", data)
+
+
+# %% [markdown]
+# 
+
+# %%
+print("Hello world")
+
+# %%
+#using re.search() like startswith()
+#tohle jsou regular expresions
+import re
+hand = open ('mbox-short.txt')
+for line in hand:
+    line = line.rstrip()
+    if re.search('^From:', line) :
+        print (line)
+#kdybych tu měl mbox-short.txt dokument, tak mi to vybere texty, které začínají na From
+
+# %%
+import re
+x = "My 2 favorite number are 9 and 42"
+y = re.findall ('[0-9]+',x)
+print(y)
+
+# %% [markdown]
+# pozor na greedy matching - chamtivé vyhledávání
+# jde o to, že re.findall se bude chtít vzít největší část, takže když napíšeme '^From:' , tak je dost možné, že nám to vezme i takovýhle kus kodu
+# From: Blabla bla :
+
+# %%
+import re
+x = "From: Using the: charakter"
+y = re.findall('^F.+:', x)
+print(y)
+
+# %%
+#z tohoto důvodu je to non greedy možnost
+import re
+x = "From: Using the: charakter"
+y = re.findall('^F.+?:', x) #za + dát ?
+print(y)
+
+# %%
+import re
+x1 = "stephen.marquard@uct.ac.za Sat Jan Mon"
+y = re.findall('\S+@\S+', x1)
+print(y)
+
+# %%
+import re
+x2 = "From stephen.marquard@uct.ac.za Sat Jan Mon"
+y = re.findall('^From( \S+@\S+ )', x2)
+print(y)
+
+# %%
+line = "From stephen.marquard@uct.ac.za Sat Jan Mon"
+words = line.split()
+email = words[1]
+pieces = email.split("@")
+print(pieces[1])
+
+# %%
+#lepší metoda re expressions na stejný příklad
+import re
+lin = "From stephen.marquard@uct.ac.za Sat Jan Mon"
+y = re.findall('@([^ ]*)', lin)
+print(y)
+
+# %%
+import re
+handle = open('regex_sum_2304034.txt')
+text = handle.read()
+numbers = re.findall('[0-9]+',text)
+numbers = [int(num) for num in numbers]
+print(sum(numbers))
+
+# %%
+#cvičení od chatgpt
+import re
+text = "Skore: 10,20,30,40,50."
+numbers1 = [int(n) for n in re.findall('[0-9]+', text)]
+average = sum(numbers1) / len(numbers1)
+print(average)
+
+
+# %%
+### PANDAS Trénink ###
+
+
+# %%
+import pandas as pd
+
+df = pd.DataFrame([[1,2,3],[4,5,6],[7,8,9]], columns=["A","B","C"], index=["x","y","z"])
+
+# %%
+df.head()
+#df.tail() - zobrazí jen spodní
+#df.head(2) - zobrazí jen dva vrchní
+
+# %%
+df.columns
+#zobrazí jen sloupce
+
+# %%
+#mohu zobrazi jen zavoláním df (proměnné pod kterou jsme si to nazvali)
+df
+
+# %% [markdown]
+# řádky si můžeme pojmenovat pomocí index= ["x","y","z"]
+
+# %%
+df.info()
+
+
+# %%
+df.describe()
+
+# %%
+df['A'].unique()
+#df.shape nám počítá kolik máme řádků a sloupců
+
+# %%
+#zde místo toho,abych si ukládal nějaký soubor do složky a otevíral ho, tak jsem to otevřel přes raw přes github
+coffee = pd.read_csv('https://raw.githubusercontent.com/KeithGalli/complete-pandas-tutorial/refs/heads/master/warmup-data/coffee.csv')
+
+# %%
+
+
+# %%
+import sys
+!"{sys.executable}" -m pip uninstall -y pyarrow fastparquet
+!"{sys.executable}" -m pip install --no-cache-dir -U "pandas>=2.2" "pyarrow>=15"
+
+
+# %%
+import sys, pandas as pd, pyarrow as pa
+print(sys.executable)
+print("pandas:", pd.__version__)
+print("pyarrow:", pa.__version__)
+
+
+# %%
+import pandas as pd
+results = pd.read_parquet("results.parquet")   # engine neuváděj, pandas si vezme pyarrow
+results.head()
+
+# %% [markdown]
+# csv je docela velký soubor, hodně se pro menší velikost používá .parquet
+
+# %% [markdown]
+# kdybych chtěl načítat xlsx soubor tedy Excelový, tak musím takhle
+# olympics_data = pd.read_excel('data.xlsx', sheet_name="results") to sheet name kvůli tomu, že nám to hodí třeba jiný sheet
+
+# %%
+#načteme rovnou všechny data
+bios = pd.read_csv('https://raw.githubusercontent.com/KeithGalli/complete-pandas-tutorial/refs/heads/master/data/bios.csv')
+
+# %%
+bios.head()
+
+# %%
+coffee #stačí takhle zavolat
+# jinak mohu print(coffee)
+# display(coffee)
+## coffee.head()   coffee.head(10)  coffee.tail(5)  coffee.sample(10) - to nám hodí náhodných 10
+
+# %%
+#coffee.loc[#Rows, #Columns]
+coffee.loc[[0,1,2]]
+#coffee.loc[0:] mohu takhle filtrovat řádky a sloupce
+
+
+# %%
+#mohu vzít i třeba jen dny
+coffee.loc[5:8, "Day"]
+#coffee.loc[5:8, ["Day", "Units Sold"]]
+
+# %%
+coffee.iloc[0:5, [0,2]] # .iloc the upper index is not inclusive, where with .loc it was inclusive
+#loc se používá když znám názvy indexů/sloupců
+#iloc když chci vybírat podle pozic
+
+# %%
+coffee.index = coffee ["Day"]
+coffee.loc["Monday":"Wednesday", "Units Sold"]
+
+# %%
+#takhle mohu měnit data, budeme měnit tu 15 na 1 řádku
+coffee
+
+# %%
+coffee.loc[1, "Units Sold" ] = 10
+coffee.head()
+
+# %% [markdown]
+# Lepší verze jak získávat data >
+
+# %%
+#coffee["Day"] -takhle jednoduše si můžeme zobrazit sloupec
+coffee.sort_values("Units Sold", ascending=False) # takhle můžeme třídit podle Units Sold s řazením od největšího
+
+# %%
+coffee.sort_values(["Units Sold", "Coffee Type"], ascending=False) # filtrujeme podle units sold, podle kávy a od nejvyššího po nejmenší
+
+# %%
+
+
+# %% [markdown]
+# Filtering data
+
+# %% [markdown]
+# 
+
+# %%
+bios.loc[bios["height_cm"] > 215, ["name","height_cm"]]
+
+# %%
+bios.loc[(bios["height_cm"] > 215) & (bios["born_country"]== "USA") ]
+
+# %%
+bios[bios["name"].str.contains("Keith")]
+#pokud chceme napsat keith malýma taky to jde ale takhle
+#bios[bios["name"].str.contains("keith", case=False)]
+
+# %%
+bios[bios["name"].str.contains("keith|patrick", case=False)] # shift + tlačítko pod escapem je jako "nebo"
+
+# %%
+bios[bios["born_country"].isin(["USA","FRA","GBR"]) & (bios["name"].str.startswith("Keith"))]
+#projede bios, hledá jestli jsou ve sloupci born_country USA,FRA,GBR nějací strings začínající na Keith
+
+# %%
+bios.loc[bios["name"].str.contains("Stock", case=False, na=False), ["name", "height_cm"]]
+
+
+# %%
+bios.query('born_country == "USA" and born_city == "Seattle"')
+
+# %% [markdown]
+# .query() - vše se píše jako řezězec =string
+# názvy sloupců se píší bez hranatých závorek
+# používáš běžné logické operátory and, or, not
+# je přehlednější a kratší
+
+# %%
+bios
+
+# %%
+
+
+
+
+
